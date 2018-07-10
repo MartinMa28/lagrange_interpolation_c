@@ -1,4 +1,5 @@
-#include "./lagrange_interpolation.h"
+#include "lagrange_interpolation.h"
+#define GROUP_SIZE 20
 
 // n -- the term of the polynomial
 // x -- x array
@@ -114,52 +115,60 @@ double* generate_normal_distribution(int n)
     }
     return values;
 }
-// int main()
-// {
-//     struct Node *poly1 = NULL;
-//     struct Node *poly2 = NULL;
 
-//     // Create first list of 5x^2 + 4x^1 + 2x^0
-//     create_node(5,2,&poly1);
-//     create_node(4,1,&poly1);
-//     create_node(2,0,&poly1);
 
-//     show(poly1);
-//     double r = compute(poly1, 1);
-//     printf("\n%f\n", r);
-//     return 0;
-// }
 
+double buffer[GROUP_SIZE];         // shared buffer for broadcasting
+pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER; // mutex for shared buffer
 
 int main()
 {
-    int term = 0;
-    printf("enter the term of the polynomial:\n");
-    scanf("%d", &term);
-
-    srand(time(NULL));
     
-    int i;
-    int coef;
-    struct Node *poly = NULL;
+    struct Node *poly1 = NULL;
+    struct Node *poly2 = NULL;
     struct Node *cur = NULL;
 
-    for(i=0;i<term;i++)
-    {
-        coef = rand() % 10;
-        cur = create_node(coef, term-1-i, &poly, &cur);
-    }
-    show(poly);
-    double *x = generate_normal_distribution(term);
-    double *y = compute_array(poly, term, x);
-    for(i=0;i<term;i++)
-    {
-        printf("x: %f, y: %f\n", x[i], y[i]);
-    }
-    double const_coef;
+    // Create first list of 5x^2 + 4x^1 + 2x^0
+    cur = create_node(5,2,&poly1, &cur);
+    cur = create_node(4,1,&poly1, &cur);
+    cur = create_node(2,0,&poly1, &cur);
 
-    const_coef = lagrange_interpolation(term, x, y, 0);
-    
-    printf("constant coefficient = %lf\n", lagrange_interpolation(term, x, y, 0));
+    show(poly1);
+    double r = compute(poly1, 1);
+    printf("\n%f\n", r);
     return 0;
 }
+
+
+//int main()
+//{
+//    int term = 0;
+//    printf("enter the term of the polynomial:\n");
+//    scanf("%d", &term);
+//
+//    srand(time(NULL));
+//    
+//    int i;
+//    int coef;
+//    struct Node *poly = NULL;
+//    struct Node *cur = NULL;
+//
+//    for(i=0;i<term;i++)
+//    {
+//        coef = rand() % 10;
+//        cur = create_node(coef, term-1-i, &poly, &cur);
+//    }
+//    show(poly);
+//    double *x = generate_normal_distribution(term);
+//    double *y = compute_array(poly, term, x);
+//    for(i=0;i<term;i++)
+//    {
+//        printf("x: %f, y: %f\n", x[i], y[i]);
+//    }
+//    double const_coef;
+//
+//    const_coef = lagrange_interpolation(term, x, y, 0);
+//    
+//    printf("constant coefficient = %lf\n", lagrange_interpolation(term, x, y, 0));
+//    return 0;
+//}
