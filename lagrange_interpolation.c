@@ -29,8 +29,53 @@ double lagrange_interpolation(int n, double *x, double *y, double a)
     return k;
 }
 
+// create new node
+void create_node(int coef, int exp, struct Node **temp)
+{
+    struct Node *r;           // r points to a term node
+    if(*temp == NULL)
+    {
+        r = malloc(sizeof(struct Node));
+        r->coef = coef;
+        r->exp = exp;
+        *temp = r;
+        r->next = malloc(sizeof(struct Node));
+        r = r->next;
+        r->next = NULL;
+    }
+    else
+    {
+        r->coef = coef;
+        r->exp = exp;
+        r->next = malloc(sizeof(struct Node));
+        r = r->next;
+        r->next = NULL;
+    }
+}
 
+void show(struct Node *node)
+{
+    while(node->next != NULL)
+    {
+        printf(" %dx^%d ", node->coef, node->exp);
+        node = node->next;
+        if(node->next != NULL)
+            printf("+");
+    }
+}
 
+int main()
+{
+    struct Node *poly1 = NULL;
+    struct Node *poly2 = NULL;
+
+    // Create first list of 5x^2 + 4x^1 + 2x^0
+    create_node(5,2,&poly1);
+    create_node(4,1,&poly1);
+    create_node(2,0,&poly1);
+
+    show(poly1);
+}
 
 
 // int main()

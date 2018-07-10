@@ -11,6 +11,4 @@ struct Node
 };
 
 double lagrange_interpolation(int n, double *x, double *y, double a);
-struct link* create_poly();
-int init_poly();
-void display_poly();
+void create_node(int x, int y, struct Node **temp);
