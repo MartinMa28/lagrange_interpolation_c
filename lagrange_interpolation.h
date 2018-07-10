@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<conio.h>
+#include<math.h>
 
 struct Node
 {
@@ -11,4 +12,7 @@ struct Node
 };
 
 double lagrange_interpolation(int n, double *x, double *y, double a);
-void create_node(int x, int y, struct Node **temp);
+struct Node * create_node(int x, int y, struct Node **temp, struct Node **cur);
+void show(struct Node *node);
+double compute(struct Node *node, double x);
+double * compute_array(struct Node *node, int n, double *x);
